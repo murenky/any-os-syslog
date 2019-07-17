@@ -1,1 +1,1 @@
-module github.com/hashicorp/go-syslog
+module github.com/murenky/any-os-syslog

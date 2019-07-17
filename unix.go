@@ -4,6 +4,7 @@ package gsyslog
 
 import (
 	"fmt"
+	"io"
 	"log/syslog"
 	"strings"
 )
@@ -46,9 +47,8 @@ func DialLogger(network, raddr string, p Priority, facility, tag string) (Syslog
 }
 
 // WriteLevel writes out a message at the given priority
-func (b *builtinLogger) WriteLevel(p Priority, buf []byte) error {
+func (b *builtinLogger) WriteLevel(p Priority, m string) error {
 	var err error
-	m := string(buf)
 	switch p {
 	case LOG_EMERG:
 		_, err = b.writeAndRetry(syslog.LOG_EMERG, m)
@@ -120,4 +120,8 @@ func facilityPriority(facility string) (syslog.Priority, error) {
 	default:
 		return 0, fmt.Errorf("invalid syslog facility: %s", facility)
 	}
+}
+
+func (l builtinLogger) SetOtherWriter(w io.Writer) {
+
 }
